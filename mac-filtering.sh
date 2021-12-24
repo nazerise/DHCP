@@ -41,6 +41,7 @@ class "pxe-mac-address" {
 }
 EOT		
 		elif [[ $i == "$end" ]]; then
+			find_last_line
 			sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
 			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]});" >> /etc/dhcp/dhcpd.class
 			echo -e "}" >>  /etc/dhcp/dhcpd.class

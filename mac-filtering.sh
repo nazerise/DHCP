@@ -33,7 +33,7 @@ while [ $SECONDS -le $secs ]
 do 
 	get_mac_address
 	for i in "${!new_list_all_mac[@]}"; do
-		if [[ $i = "0" && ! -f  /etc/dhcp/dhcpd.class ]]; then
+		if [[ $i = "0" && ! -f  /etc/dhcp/dhcpd.class && $end != "0" ]]; then
 			cat > etc/dhcp/dhcpd.class <<\EOT
 ##mac address class
 class "pxe-mac-address" {

@@ -41,13 +41,13 @@ class "pxe-mac-address" {
 }
 EOT		
 		elif [[ $i == "$end" ]]; then
-			sed -i 's/);/) or/g' dhcpd.class
+			sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
 			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]});" >> /etc/dhcp/dhcpd.class
 			echo -e "}" >>  /etc/dhcp/dhcpd.class
 			systemctl restart isc-dhcp-server
 		else
 			find_last_line
-			sed -i 's/);/) or/g' dhcpd.class
+			sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
 			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]}) or" >> /etc/dhcp/dhcpd.class
 		fi
 	done

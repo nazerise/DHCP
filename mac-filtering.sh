@@ -34,7 +34,7 @@ do
 	get_mac_address
 	for i in "${!new_list_all_mac[@]}"; do
 		if [[ $i = "0" && ! -f  /etc/dhcp/dhcpd.class ]]; then
-			cat > etc/dhcp/dhcpd.class <<\EOT
+			cat > etc/dhcp/dhcpd.class <<EOT
 ##mac address class
 class "pxe-mac-address" {
         match if (substring(hardware,1,6) = ${new_list_all_mac[$i]});

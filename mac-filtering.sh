@@ -13,12 +13,13 @@ find_last_line () {
 	last_line=$(tail -n 1 /etc/dhcp/dhcpd.class)
 	check_line=$(tail -n 1 /etc/dhcp/dhcpd.class | grep hardware )
 	if [[ -z $check_line ]]; then 
-        	while [[ "$end" != "}" ]]
+        	while [[ "$last_line" != "}" ]]
         	do
                 	echo -e "\033[0;31mNO last line \033[0m"
                 	sed -i '$d' /etc/dhcp/dhcpd.class
-                	end=$(tail -n 1 /etc/dhcp/dhcpd.class)
+                	last_line=$(tail -n 1 /etc/dhcp/dhcpd.class)
         	done
+		sed -i '$d' /etc/dhcp/dhcpd.class
 	fi
 }
 

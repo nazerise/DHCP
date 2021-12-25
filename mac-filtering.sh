@@ -30,25 +30,28 @@ if [[ -f /etc/dhcp/dhcpd.class ]]; then
 else
 	declare -A old_list_all_mac=()
 fi
-
+first_line=$(cat /etc/dhcp/dhcpd.class | grep match )
 while [ $SECONDS -le $secs ]
 do 
 	get_mac_address
 	for i in "${!new_list_all_mac[@]}"; do
 		find_last_line
 		sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
-		if [[ $i == $end ]]; then
-			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]});" >> /etc/dhcp/dhcpd.class
-			echo -e "}" >>  /etc/dhcp/dhcpd.class
-			systemctl restart isc-dhcp-server
-		elif [[ $i == "0" ]]; then
+		if [[ -z $first_line  ]]; then
+			echo $first_line
+			echo ${new_list_all_mac[$i]}
 			sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
-			echo -e "        match if (substring(hardware,1,6) = ${new_list_all_mac[$i]}); " >> /etc/dhcp/dhcpd.class
+			echo -e "        match if (substring(hardware,1,6) = ${new_list_all_mac[$i]} ); " >> /etc/dhcp/dhcpd.class
 			echo -e "}" >>  /etc/dhcp/dhcpd.class
-			systemctl restart isc-dhcp-server
+			sudo systemctl restart isc-dhcp-server
+			first_line=$(cat /etc/dhcp/dhcpd.class | grep match )
+		elif [[ $i == $end ]]; then
+			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]} );" >> /etc/dhcp/dhcpd.class
+			echo -e "}" >>  /etc/dhcp/dhcpd.class
+			sudo systemctl restart isc-dhcp-server
 		else
 			sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
-			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]}) or" >> /etc/dhcp/dhcpd.class
+			echo -e "                 (substring(hardware,1,6) = ${new_list_all_mac[$i]} ) or" >> /etc/dhcp/dhcpd.class
 			echo -e "}" >>  /etc/dhcp/dhcpd.class
 		fi
 	done

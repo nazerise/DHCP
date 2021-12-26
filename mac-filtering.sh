@@ -38,8 +38,6 @@ do
 		find_last_line
 		sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
 		if [[ -z $first_line  ]]; then
-			echo $first_line
-			echo ${new_list_all_mac[$i]}
 			sed -i 's/);/) or/g' /etc/dhcp/dhcpd.class
 			echo -e "        match if (substring(hardware,1,6) = ${new_list_all_mac[$i]} ); " >> /etc/dhcp/dhcpd.class
 			echo -e "}" >>  /etc/dhcp/dhcpd.class

@@ -1,0 +1,5 @@
+##mac address class
+class "pxe-mac-address" {
+        match if (substring(hardware,1,6) = 08:00:27:e8:24:b2 ) or 
+                 (substring(hardware,1,6) = 08:00:27:b4:1e:44 );
+}
